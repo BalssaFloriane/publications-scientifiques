@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Valorisation scientifique – F. Balssa</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f6f8f9;--surface:#ffffff;--ink:#16252b;--muted:#51636b;--line:#d8e0e3;--accent:#0b6b6f;--accent-soft:#dcefef;--flag:#8a4b00;--flag-soft:#fbe9d0;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10191c;--surface:#172328;--ink:#e6eef0;--muted:#9db0b6;--line:#2a3b41;--accent:#5cc6c9;--accent-soft:#1c3a3d;--flag:#f0b567;--flag-soft:#3a2b14}}
+:root[data-theme="dark"]{--bg:#10191c;--surface:#172328;--ink:#e6eef0;--muted:#9db0b6;--line:#2a3b41;--accent:#5cc6c9;--accent-soft:#1c3a3d;--flag:#f0b567;--flag-soft:#3a2b14}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 "Literata",Georgia,"Times New Roman",serif}
+.wrap{max-width:820px;margin:0 auto;padding:40px 20px 64px}
+h1{font:600 clamp(1.8rem,5vw,2.5rem)/1.15 "Literata",Georgia,serif;margin:0 0 10px;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 28px;max-width:62ch}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 28px;padding:0;list-style:none;font:500 .95rem "Public Sans",system-ui,sans-serif}
+.stats b{font-size:1.5rem;font-weight:600;color:var(--accent);margin-right:6px}
+.filters{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;margin-bottom:6px;display:flex;flex-wrap:wrap;gap:8px;z-index:2;border-bottom:1px solid var(--line)}
+.filters button{font:500 .88rem "Public Sans",system-ui,sans-serif;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .filters button[aria-pressed="true"]{color:#0a1416}}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h2{font:600 1.2rem "Public Sans",system-ui,sans-serif;margin:34px 0 4px}
+.item{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:16px 18px;margin:12px 0}
+.item .t{font-weight:600;margin:0 0 4px;font-size:1.02rem}
+.item .a,.item .v{margin:0;color:var(--muted);font-size:.94rem}
+.item .v{color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font:500 .82rem "Public Sans",system-ui,sans-serif}
+.tag{background:var(--accent-soft);color:var(--accent);padding:2px 9px;border-radius:4px}
+.tag.flag{background:var(--flag-soft);color:var(--flag)}
+.meta a{color:var(--accent);font-weight:600}
+.me{color:var(--ink);font-weight:600}
+footer{margin-top:44px;color:var(--muted);font:.85rem "Public Sans",system-ui,sans-serif}
+.empty{display:none}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Valorisation scientifique</h1>
+  <p class="lead">Psychologie ergonomique, accessibilité cognitive (Facile à Lire et à Comprendre) et expérience utilisateur à l’ère de l’IA. Articles, communications, interventions et outils numériques.</p>
+  <ul class="stats" id="stats"></ul>
+  <nav class="filters" id="filters" aria-label="Filtrer par type"></nav>
+  <div id="list"></div>
+  <footer>Auteur·e : F. Balssa. Les revues sont indiquées avec leur indexation (PsycInfo, Scopus, Cairn) lorsqu’elle est connue.</footer>
+</main>
+<script>
+var CATS=[
+ {id:"revues",label:"Articles et chapitres"},
+ {id:"intl",label:"Colloques internationaux"},
+ {id:"nat",label:"Colloques nationaux"},
+ {id:"invite",label:"Conférences invitées"},
+ {id:"autres",label:"Autres valorisations"}
+];
+var D=[
+ {c:"revues",y:"2026",a:"Balssa, F., Nativel-Fontaine, G., Lespinet-Najib, V.",t:"De la conception centrée utilisateur à la conception médiée par l’Intelligence Artificielle : analyse psycho-ergonomique des pratiques dans le domaine de l’eXpérience Utilisateur",v:"Psychologie Française",tags:["Soumis le 30 janvier 2026","PsycInfo","Scopus Q4"],flag:0},
+ {c:"revues",y:"2026",a:"Nativel-Fontaine, G., Balssa, F., Lespinet-Najib, V., Chevrie, M., Aioun, F., Ojeda, L.",t:"The role of algorithmic and environmental factors in the acceptability of autonomous vehicles: A study on a priori and in situ perceptions",v:"International Journal of Human-Computer Interaction",tags:["PsycInfo","Scopus Q1"]},
+ {c:"revues",y:"2026",a:"Nativel-Fontaine, G., Balssa, F., Lacourte, D., Demontoux, F., Lespinet-Najib, V.",t:"Generative AI : Challenges and perspectives in promoting the use of Easy-to-Read",v:"HCI International 2026 Conference Proceedings",tags:["Accepté en décembre 2025"],flag:0},
+ {c:"revues",y:"2024",a:"Balssa, F., Da Silva, S., & Lespinet-Najib, V.",t:"A research-action-training approach to adapting easy-to-read to teaching issues in primary school",v:"International Journal of Psychology, 59",tags:["PsycInfo","Scopus Q1"],l:["https://doi.org/10.1002/ijop.13198","DOI"]},
+ {c:"revues",y:"2023",a:"Balssa, F., Lespinet-Najib, V. & Bazin, I.",t:"Le FALC pour une pratique scolaire plus inclusive : entre règles strictes et adaptations",v:"Dans M. Kohout-Diaz (éd.), Éthiques inclusives en éducation : Recherches, contextes et pratiques (pp. 161-182). Nîmes : Champ social",tags:["Cairn"],l:["https://doi.org/10.3917/chaso.kohou.2023.01.0162","DOI"]},
+ {c:"intl",y:"2026",a:"Nativel-Fontaine, G., Balssa, F., Lacourte, D., Demontoux, F., Lespinet-Najib, V.",t:"Generative AI : Challenges and perspectives in promoting the use of Easy-to-Read",v:"HCI International 2026, Montréal, Canada, 23-31 juillet 2026"},
+ {c:"intl",y:"2025",a:"Balssa, F., Nativel-Fontaine, G., Bouchiha, M., Lespinet-Najib, V.",t:"Quand l’IA redessine l’UX : impacts et évolutions des pratiques professionnelles",v:"3e colloque international C2IP’2025, Agadir, Maroc, 16-18 décembre 2025"},
+ {c:"intl",y:"2024",a:"Balssa, F., Da Silva, S., Lespinet-Najib, V.",t:"A Research-Action-Training approach to adapting easy-to-Read to teaching issues in primary school",v:"33rd International Congress of Psychology, Prague, République tchèque, 21-26 juillet 2024"},
+ {c:"intl",y:"2023",a:"Balssa, F., Bazin, I., Lespinet-Najib, V.",t:"Démarche de Recherche-Action pour adapter le Facile à Lire et à Comprendre aux problématiques d’enseignement en école primaire",v:"10e Colloque international en éducation, Montréal, Canada, 4-5 mai 2023"},
+ {c:"nat",y:"2023",a:"Balssa, F., Lespinet-Najib, V.",t:"Acceptabilité du FALC en école élémentaire française : Apport du Modèle UTAUT-2",v:"ÉPIQUE 2023, 12e colloque de Psychologie Ergonomique, Paris, 5-7 juillet 2023"},
+ {c:"nat",y:"2022",a:"Balssa, F., Lespinet-Najib, V.",t:"Les enseignants en école élémentaire française connaissent-ils le Facile à Lire et à Comprendre (FALC) ? Enquête par questionnaire",v:"Conférence Handicap 2022, 12e édition, Paris, 8-10 juin 2022"},
+ {c:"nat",y:"2022",a:"Balssa, F., Lespinet-Najib, V.",t:"Le Facile à Lire et à Comprendre peut-il être une aide pour l’inclusion en école élémentaire ? Étude préliminaire",v:"Conférence régionale ISATT 2022, Inclusive ethics in education as a new horizon for teachers and teaching, Mérignac, 6-7 octobre 2022"},
+ {c:"nat",y:"2021",a:"Balssa, F., Pinède, N., & Lespinet-Najib, V.",t:"Projet « Fractures corporelles, Fractures numériques » : Comprendre le rapport au numérique des personnes en situation de handicap",v:"Publics vulnérables et numérique : entre fractures, inclusions et innovations, actes du colloque, Pessac, 2-3 juin 2021"},
+ {c:"invite",y:"2025",a:"Balssa, F. & Lespinet-Najib, V.",t:"Place du FALC comme levier pour une mobilité inclusive",v:"Journée Mobilité 100 % inclusive, département de la Gironde, 24 janvier 2025",tags:["Public : associations, collectivités territoriales"]},
+ {c:"autres",y:"2024",a:"Balssa, F., Lespinet-Najib, V.",t:"Plateforme EduFALC (Version 1)",v:"Création d’une plateforme numérique [Logiciel]",tags:["Plateforme numérique"],l:["https://edufalc.fr","edufalc.fr"]},
+ {c:"autres",y:"2024",a:"Lespinet-Najib, V., Balssa, F.",t:"Intégration des règles FALC dans le milieu scolaire : intérêts et limites",v:"Formation à distance, MFIN Accompagner les élèves avec des difficultés de langage oral dans les apprentissages (INSHEA), 21 mars et 22 juin 2024",tags:["Formation à distance"]},
+ {c:"autres",y:"2023",a:"Balssa, F., Lespinet-Najib, V.",t:"Adaptation des règles d’accessibilité européennes Facile à Lire et à Comprendre (FALC) aux problématiques d’enseignement en école élémentaire",v:"Journée de l’École Doctorale SPI 2023",tags:["Lauréat du meilleur poster scientifique"],flag:1},
+ {c:"autres",y:"2021",a:"Lespinet-Najib, V., Balssa, F.",t:"Initiation au FALC (Facile à lire et à comprendre)",v:"Atelier, Colloque de la Chaire Handicap, Éducation et Numérique, INSHEA, Suresnes, 21-23 octobre 2021",tags:["Animation d’atelier"]}
+];
+var cur="all";
+function me(s){return s.replace(/Balssa, F\./g,'<span class="me">Balssa, F.</span>')}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function render(){
+  var out="";
+  CATS.forEach(function(c){
+    if(cur!=="all"&&cur!==c.id)return;
+    var items=D.filter(function(d){return d.c===c.id});
+    out+='<h2>'+c.label+' ('+items.length+')</h2>';
+    items.forEach(function(d){
+      var tags=(d.tags||[]).map(function(t,i){
+        var f=(d.flag!==undefined&&i===0&&(d.flag===1||d.flag===0))?" flag":"";
+        return '<span class="tag'+f+'">'+esc(t)+'</span>';
+      }).join("");
+      var link=d.l?'<a href="'+d.l[0]+'" target="_blank" rel="noopener">'+d.l[1]+'</a>':"";
+      out+='<article class="item"><p class="t">'+esc(d.t)+'</p><p class="a">'+me(esc(d.a))+' ('+d.y+')</p><p class="v">'+esc(d.v)+'</p><div class="meta">'+tags+link+'</div></article>';
+    });
+  });
+  document.getElementById("list").innerHTML=out;
+}
+function buildFilters(){
+  var f=document.getElementById("filters");
+  var all=[{id:"all",label:"Tout ("+D.length+")"}].concat(CATS.map(function(c){return{id:c.id,label:c.label}}));
+  all.forEach(function(c){
+    var b=document.createElement("button");b.type="button";b.textContent=c.label;
+    b.setAttribute("aria-pressed",c.id===cur);
+    b.onclick=function(){cur=c.id;[].forEach.call(f.children,function(x){x.setAttribute("aria-pressed","false")});b.setAttribute("aria-pressed","true");render()};
+    f.appendChild(b);
+  });
+}
+function stats(){
+  var n=function(id){return D.filter(function(d){return d.c===id}).length};
+  var q1=D.filter(function(d){return (d.tags||[]).indexOf("Scopus Q1")>-1}).length;
+  document.getElementById("stats").innerHTML=
+   '<li><b>'+n("revues")+'</b>articles et chapitres</li><li><b>'+q1+'</b>revues Scopus Q1</li><li><b>'+(n("intl")+n("nat")+n("invite"))+'</b>communications et conférences</li><li><b>1</b>plateforme numérique</li>';
+}
+stats();buildFilters();render();
+</script>
+</body>
+</html>
